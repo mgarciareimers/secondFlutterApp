@@ -11,8 +11,17 @@ class CardPage extends StatelessWidget {
       body: ListView(
         children: <Widget>[
           this._cardType1(),
-          SizedBox(height: 30),
+          SizedBox(height: 20),
           this._cardType2(),
+          SizedBox(height: 20),
+          this._cardType2(),
+          SizedBox(height: 20),
+          this._cardType2(),
+          SizedBox(height: 20),
+          this._cardType2(),
+          SizedBox(height: 20),
+          this._cardType2(),
+          SizedBox(height: 20),
         ],
         padding: EdgeInsets.all(10),
       ),
@@ -45,11 +54,14 @@ class CardPage extends StatelessWidget {
           ),
         ],
       ),
+      elevation: 10,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
     );
   }
 
   Widget _cardType2() {
-    return Card(
+    
+  Container card = Container(
       child: Column(
         children: <Widget>[
           FadeInImage(
@@ -63,6 +75,25 @@ class CardPage extends StatelessWidget {
             padding: EdgeInsets.all(10),
             child: Text('I do not know what to put.'))
         ],
+      ),
+    );
+
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(30.0),
+        color: Colors.white,
+        boxShadow: <BoxShadow>[
+          BoxShadow(
+            color: Colors.black26,
+            blurRadius: 10.0,
+            spreadRadius: 2.0,
+            offset: Offset(2.0, 10.0)
+          )
+        ]
+      ),
+      child: ClipRRect(
+        child: card,
+        borderRadius: BorderRadius.circular(30.0),
       ),
     );
   }

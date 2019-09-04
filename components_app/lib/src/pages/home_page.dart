@@ -25,8 +25,6 @@ class HomePage extends StatelessWidget {
         );
       }, 
     );
-    
-    //ListView(children: this._createListViewItems());
   }
 
   // Method that creates the items list.
