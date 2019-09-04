@@ -33,19 +33,20 @@ class HomePage extends StatelessWidget {
   List<Widget> _createListViewItems(List<dynamic> data, BuildContext context) {
     final List<Widget> options = [];
 
-    data.forEach((option) {
-      final Widget element = ListTile(
-        title: Text(option['texto']),
-        leading: getIcon(option['icon']),
-        trailing: Icon(Icons.keyboard_arrow_right, color: Colors.blue),
-        onTap: () {
-          Navigator.pushNamed(context, option['ruta']);
-        }
-      );
+    if (data != null) {
+      data.forEach((option) {
+        final Widget element = ListTile(
+          title: Text(option['texto']),
+          leading: getIcon(option['icon']),
+          trailing: Icon(Icons.keyboard_arrow_right, color: Colors.blue),
+          onTap: () {
+            Navigator.pushNamed(context, option['ruta']);
+          }
+        );
 
-      options..add(element)..add(Divider());
-    });
-
+        options..add(element)..add(Divider());
+      });
+    }
     return options;
   }
 }
