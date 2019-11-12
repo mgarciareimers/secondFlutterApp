@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:components_app/src/providers/menu_provider.dart';
-import 'package:components_app/src/utils/icon_string_util.dart';
+import 'package:components_app/src/commons/utils/icon_string_util.dart';
+import 'package:components_app/src/pages/alert_page.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -10,41 +11,34 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Components'),
       ),
-      body: this._createList()
+      body: _list(),
     );
   }
 
-  // Method that creates the list.
-  Widget _createList() {
+  Widget _list() {
     return FutureBuilder(
-      future: menuProvider.loadData(),
-      initialData: [],
-      builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
-        return ListView(
-          children: this._createListViewItems(snapshot.data, context)
-        );
-      }, 
-    );
+        future: menuProvider.loadData(),
+        initialData: [],
+        builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+          return ListView(
+            children: _itemsList(snapshot.data, context),
+          );
+        });
   }
 
-  // Method that creates the items list.
-  List<Widget> _createListViewItems(List<dynamic> data, BuildContext context) {
-    final List<Widget> options = [];
+  List<Widget> _itemsList(List<dynamic> data, BuildContext context) {
+    List<Widget> items = [];
 
-    if (data != null) {
-      data.forEach((option) {
-        final Widget element = ListTile(
-          title: Text(option['texto']),
-          leading: getIcon(option['icon']),
-          trailing: Icon(Icons.keyboard_arrow_right, color: Colors.blue),
-          onTap: () {
-            Navigator.pushNamed(context, option['ruta']);
-          }
-        );
+    data.forEach((option) {
+      items.add(ListTile(
+        title: Text(option['text']),
+        leading: getIcon(option['icon']),
+        trailing: Icon(Icons.arrow_right, color: Colors.blue,),
+        onTap: () => Navigator.pushNamed(context, option['route']),
+      ));
+      items.add(Divider());
+    });
 
-        options..add(element)..add(Divider());
-      });
-    }
-    return options;
+    return items;
   }
 }
