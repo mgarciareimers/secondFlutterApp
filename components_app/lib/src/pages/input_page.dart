@@ -8,6 +8,13 @@ class InputPage extends StatefulWidget {
 class _InputPageState extends State<InputPage> {
   String _name = "";
   String _email = "";
+  DateTime _date;
+
+  TextEditingController _inputFieldDateController = new TextEditingController();
+
+  List<String> _options = ['Select', 'Fly', 'X-Ray', 'Super Power'];
+
+  String _selectedOption = 'Select';
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +30,10 @@ class _InputPageState extends State<InputPage> {
           this._createEmailInput(),
           Divider(),
           this._createPasswordInput(),
+          Divider(),
+          this._createDate(context),
+          Divider(),
+          this._createDropdown(),
           Divider(),
           this._createPerson(),
         ],
@@ -52,7 +63,7 @@ class _InputPageState extends State<InputPage> {
       );
   }
 
-  // Method that creates an email.
+  // Method that creates an email input.
   Widget _createEmailInput() {
     return TextField(
       keyboardType: TextInputType.emailAddress,
@@ -69,7 +80,7 @@ class _InputPageState extends State<InputPage> {
     );
   }
 
-  // Method that creates an email.
+  // Method that creates a password input.
   Widget _createPasswordInput() {
     return TextField(
       obscureText: true,
@@ -86,11 +97,81 @@ class _InputPageState extends State<InputPage> {
     );
   }
 
+  // Method that creates a date input.
+  Widget _createDate(BuildContext context) {
+    return TextField(
+      enableInteractiveSelection: false,
+      decoration: InputDecoration(
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(5)),
+        prefixIcon: Icon(Icons.perm_contact_calendar),
+        suffixIcon  : Icon(Icons.calendar_today),
+        hintText: 'Type your birthdate...',
+        labelText: 'Birthdate',
+      ),
+      onTap: () {
+        FocusScope.of(context).requestFocus(new FocusNode());
+        this._selectDate(context);
+      },
+      controller: this._inputFieldDateController,
+    );
+  }
+
+  // Method that creates a dropdown menu.
+  Widget _createDropdown() {
+    return Row(
+      children: [
+        Icon(Icons.select_all),
+        SizedBox(width: 10),
+        Expanded(
+          child: DropdownButton(
+            items: this._getDropdownOptions(),
+            onChanged: (selectedOption) {
+              setState(() {
+                this._selectedOption = selectedOption;
+              });
+            },
+            value: this._selectedOption,
+          ),
+        ),
+      ]
+    );
+  }
+
   // Method that creates a person.
   Widget _createPerson() {
     return ListTile(
       title: Text('Name: ${ this._name }'),
       subtitle: Text('Email: ${ this._email }'),
+      trailing: Text('Power: ${this._selectedOption}'),
     );
+  }
+
+  // Method that selects a date by showing a date picker.
+  _selectDate(BuildContext context) async {
+    DateTime dateTime = await showDatePicker(
+        context: context,
+        initialDate:this._date == null ? new DateTime.now() : this._date,
+        firstDate: new DateTime(1990),
+        lastDate: new DateTime(2025),
+        locale: Locale('en', 'US'),
+    );
+
+    if (dateTime != null) {
+      setState(() {
+        this._date = dateTime;
+        this._inputFieldDateController.text = '${dateTime.day.toString()}/${dateTime.month.toString()}/${dateTime.year.toString()}';
+      });
+    }
+  }
+
+  // Method that gets the dropdown options.
+  List<DropdownMenuItem<String>> _getDropdownOptions() {
+    List<DropdownMenuItem<String>> list = new List();
+
+    this._options.forEach((option) {
+      list.add(DropdownMenuItem(child: Text(option), value: option));
+    });
+
+    return list;
   }
 }

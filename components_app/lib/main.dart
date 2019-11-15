@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_localizations/flutter_localizations.dart';
+
 //import 'package:components_app/src/pages/home_temp_page.dart';
 import 'package:components_app/src/pages/alert_page.dart';
 import 'package:components_app/src/routes/routes.dart';
@@ -11,6 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'App Components',
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: getApplicationRoutes(),
@@ -19,6 +22,14 @@ class MyApp extends StatelessWidget {
           builder: (BuildContext context) => AlertPage()
         );
       },
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en', 'US'),
+        const Locale('es', 'ES'),
+      ],
     );
   }
 }
